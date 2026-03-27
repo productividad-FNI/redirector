@@ -2,62 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Abriendo carpeta...</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      background: #0d0f14;
-      color: #c8d6e5;
-    }
-    .card {
-      text-align: center;
-      padding: 40px;
-      border: 1px solid #252d3d;
-      border-radius: 8px;
-      background: #161b25;
-      max-width: 480px;
-    }
-    .ruta {
-      font-family: monospace;
-      background: #0d0f14;
-      padding: 10px 16px;
-      border-radius: 4px;
-      margin: 16px 0;
-      word-break: break-all;
-      color: #00e5ff;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 24px;
-      background: transparent;
-      border: 1px solid #00e5ff;
-      color: #00e5ff;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover { background: rgba(0,229,255,0.1); }
-    .error { color: #ff4d6d; }
-  </style>
 </head>
 <body>
-<div class="card" id="card">
-  <p id="mensaje">Iniciando...</p>
-  <div class="ruta" id="ruta-display"></div>
-  <button id="btn" style="display:none" onclick="abrir()">🔁 Reintentar apertura</button>
-</div>
-
 <script>
-  const params = new URLSearchParams(window.location.search);
-  let ruta = params.get('ruta') || '';
+  var params = new URLSearchParams(window.location.search);
+  var ruta = params.get('ruta') || '';
 
-  // Limpiar ruta
   ruta = ruta.replace(/['"]/g, '');
   ruta = ruta.replace(/\//g, '\\');
   ruta = ruta.replace(/^(\\\\)/, '__UNC__');
@@ -65,39 +16,11 @@
   ruta = ruta.replace(/^__UNC__/, '\\\\');
   ruta = ruta.trim();
 
-  const display = document.getElementById('ruta-display');
-  const mensaje = document.getElementById('mensaje');
-  const btn     = document.getElementById('btn');
-
-  if (!ruta) {
-    mensaje.innerHTML = '<span class="error">⚠️ No se recibió ninguna ruta.</span>';
-    display.textContent = 'Verifica la configuración en AppSheet.';
-  } else {
-    display.textContent = ruta;
-    mensaje.textContent = 'Abriendo carpeta...';
-    btn.style.display = 'inline-block';
-    setTimeout(abrir, 800);
-  }
-
-  function abrir() {
+  if (ruta) {
     window.location.href = 'openfolder:' + ruta;
+  } else {
+    document.write('<h2>Error: no se recibio parametro ruta</h2>');
   }
 </script>
 </body>
 </html>
-```
-
-4. Baja hasta **"Commit changes"**
-5. Deja el mensaje por defecto y clic en **"Commit changes"**
-
----
-
-## Paso 4 — Activar GitHub Pages
-
-1. Clic en **"Settings"** (pestaña del repositorio)
-2. En el menú izquierdo busca **"Pages"**
-3. En **"Branch"** selecciona `main` y carpeta `/ (root)`
-4. Clic en **"Save"**
-5. Espera ~2 minutos y recarga la página — aparecerá un mensaje verde con tu URL:
-```
-✅ Your site is live at https://TU-USUARIO.github.io/redirector/
