@@ -9,11 +9,23 @@
   var params = new URLSearchParams(window.location.search);
   var ruta = params.get('ruta') || '';
 
+  // Decodificar por si viene codificada
+  ruta = decodeURIComponent(ruta);
+  
+  // Eliminar comillas
   ruta = ruta.replace(/['"]/g, '');
+  
+  // Normalizar: reemplazar todas las barras / por \
   ruta = ruta.replace(/\//g, '\\');
-  ruta = ruta.replace(/^(\\\\)/, '__UNC__');
+  
+  // Colapsar múltiples barras seguidas en una sola
   ruta = ruta.replace(/\\{2,}/g, '\\');
-  ruta = ruta.replace(/^__UNC__/, '\\\\');
+  
+  // Restaurar \\ al inicio para rutas UNC (\\servidor o \\C:)
+  if (ruta.charAt(0) === '\\') {
+    ruta = '\\' + ruta;
+  }
+  
   ruta = ruta.trim();
 
   if (ruta) {
