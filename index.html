@@ -9,24 +9,8 @@
   var params = new URLSearchParams(window.location.search);
   var ruta = params.get('ruta') || '';
 
-  // Decodificar por si viene codificada
-  ruta = decodeURIComponent(ruta);
-  
-  // Eliminar comillas
-  ruta = ruta.replace(/['"]/g, '');
-  
-  // Normalizar: reemplazar todas las barras / por \
-  ruta = ruta.replace(/\//g, '\\');
-  
-  // Colapsar múltiples barras seguidas en una sola
-  ruta = ruta.replace(/\\{2,}/g, '\\');
-  
-  // Restaurar \\ al inicio para rutas UNC (\\servidor o \\C:)
-  if (ruta.charAt(0) === '\\') {
-    ruta = '\\' + ruta;
-  }
-  
-  ruta = ruta.trim();
+  // Solo limpiar comillas y espacios, sin tocar las barras
+  ruta = ruta.replace(/['"]/g, '').trim();
 
   if (ruta) {
     window.location.href = 'openfolder:' + ruta;
